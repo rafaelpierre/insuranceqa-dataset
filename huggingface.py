@@ -35,8 +35,12 @@ class HFDataset(object):
             dataset[split] = Dataset.from_pandas(df)
 
 
-        return dataset
+        dataset.save_to_disk("./dataset")
 
+    def push_to_hub(input_path: str = "./dataset"):
+
+        dataset = datasets.load_from_disk("./dataset")
+        dataset.push_to_hub("insurance-qa-en")
 
 if __name__ == "__main__":
     fire.Fire(HFDataset)
