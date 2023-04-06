@@ -7,4 +7,5 @@ def test_create_dataset():
     result = hf_dataset.create_dataset()
 
     assert result is not None
-    assert sorted(["index", "topic_en", "question_en"]) == sorted(result.columns)
+    for split in ["train", "test", "valid"]:
+        assert split in result.keys()

@@ -1,5 +1,5 @@
 import datasets
-from datasets import Dataset, DatasetBuilder, DatasetDict
+from datasets import Dataset, DatasetDict
 import pandas as pd
 import fire
 
@@ -11,24 +11,31 @@ class HFDataset(object):
         language: str = "en"
     ) -> pd.DataFrame:
 
-        train_df = pd.read_csv(
-            "/tmp/insuranceqa_train.txt",
-            names = [
-                "index",
-                "topic_en",
-                "question_zh",
-                "question_en",
-                "topic_zh"
-            ],
-            sep = "\t",
-            engine = "python",
-            header = 1
-        )
+        splits = ["train", "test", "valid"]
+        dataset = DatasetDict()
 
-        if language == "en":
-            train_df = train_df.loc[:, ["index", "topic_en", "question_en"]]
+        for split in splits:
+            df = pd.read_csv(
+                "/tmp/insuranceqa_train.txt",
+                names = [
+                    "index",
+                    "topic_en",
+                    "question_zh",
+                    "question_en",
+                    "topic_zh"
+                ],
+                sep = "\t",
+                engine = "python",
+                header = 1
+            )
 
-        return train_df
+            if language == "en":
+                df = df.loc[:, ["index", "topic_en", "question_en"]]
+
+            dataset[split] = Dataset.from_pandas(df)
+
+
+        return dataset
 
 
 if __name__ == "__main__":
