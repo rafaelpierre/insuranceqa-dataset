@@ -1,0 +1,7 @@
+wheel
+datasets
+huggingface_hub
+fire
+pandas
+jinja2
+pytest
