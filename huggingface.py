@@ -16,7 +16,7 @@ class HFDataset(object):
 
         for split in splits:
             df = pd.read_csv(
-                "/tmp/insuranceqa_train.txt",
+                f"/tmp/insuranceqa_{split}.txt",
                 names = [
                     "index",
                     "topic_en",
