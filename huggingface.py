@@ -37,6 +37,25 @@ class HFDataset(object):
 
         dataset.save_to_disk("./dataset")
 
+    def create_answers_dataset(
+        input_path: str = "/tmp",
+        language: str = "en"
+    ) -> pd.DataFrame:
+
+        splits = ["train"]
+        dataset = DatasetDict()
+
+        for split in splits:
+            df = pd.read_json(f"{input_path}/answers.json", orient = "index")
+
+            if language == "en":
+                df = df.loc[:, [language, "domain", "answers"]]
+
+            dataset[split] = Dataset.from_pandas(df)
+
+
+        dataset.save_to_disk("./dataset")
+
     def push_to_hub(input_path: str = "./dataset"):
 
         dataset = datasets.load_from_disk("./dataset")
